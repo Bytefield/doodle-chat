@@ -25,7 +25,7 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   };
 
   return (
-    <div className="flex gap-2 p-4 border-t">
+    <div className="flex gap-2 p-4">
       <input
         type="text"
         value={input}
@@ -33,12 +33,12 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
         onKeyDown={handleKeyDown}
         placeholder="Type a message..."
         disabled={isLoading}
-        className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+        className="flex-1 min-h-11 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
       />
       <button
         onClick={handleSend}
         disabled={isLoading || !input.trim()}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        className="min-h-11 px-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
       >
         Send
       </button>

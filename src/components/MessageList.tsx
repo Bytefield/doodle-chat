@@ -18,14 +18,14 @@ export function MessageList({ messages, currentUser }: MessageListProps) {
 
   if (messages.length === 0) {
     return (
-      <div className="flex-1 flex items-center justify-center text-gray-500">
+      <div className="h-full flex items-center justify-center text-gray-500">
         No messages yet
       </div>
     );
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-2">
+    <div className="h-full overflow-y-auto p-4 space-y-2">
       {messages.map((message, index) => {
         const isOwn = message.author === currentUser;
         const prevMessage = messages[index - 1];
