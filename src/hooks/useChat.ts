@@ -35,10 +35,14 @@ export function useChat() {
     try {
       const newMessages = await getMessages({ after: lastMessageTime.current });
       if (newMessages.length > 0) {
-        setMessages((prev) => [...prev, ...newMessages]);
+        setMessages((prev) => {
+          const existingIds = new Set(prev.map((m) => m._id));
+          const uniqueNew = newMessages.filter((m) => !existingIds.has(m._id));
+          return uniqueNew.length > 0 ? [...prev, ...uniqueNew] : prev;
+        });
         lastMessageTime.current = newMessages[newMessages.length - 1].createdAt;
       }
-    } catch (err) {
+    } catch {
       // silently fail on poll errors
     }
   }, []);
@@ -66,12 +70,19 @@ export function useChat() {
     }
   };
 
+  const retry = () => {
+    setIsLoading(true);
+    setError(null);
+    fetchMessages();
+  };
+
   return {
     messages,
     isLoading,
     isSending,
     error,
     sendMessage,
+    retry,
     currentUser: CURRENT_USER,
   };
 }

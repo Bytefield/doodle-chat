@@ -51,7 +51,7 @@ export function MessageList({ messages, currentUser }: MessageListProps) {
           const showAuthor = !prevMessage || prevMessage.author !== message.author;
 
           return (
-            <li key={message.id}>
+            <li key={message._id}>
               <MessageBubble
                 message={message}
                 isOwn={isOwn}

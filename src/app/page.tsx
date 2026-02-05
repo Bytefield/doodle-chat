@@ -5,7 +5,7 @@ import { MessageList } from '@/components/MessageList';
 import { ChatInput } from '@/components/ChatInput';
 
 export default function Home() {
-  const { messages, isLoading, isSending, error, sendMessage, currentUser } = useChat();
+  const { messages, isLoading, isSending, error, sendMessage, retry, currentUser } = useChat();
 
   return (
     <div className="flex flex-col h-dvh bg-gray-50">
@@ -16,8 +16,14 @@ export default function Home() {
       </header>
 
       {error && (
-        <div className="p-2 bg-red-100 text-red-700 text-sm text-center">
-          {error}
+        <div className="p-3 bg-red-100 text-red-700 text-sm text-center flex items-center justify-center gap-3">
+          <span>{error}</span>
+          <button
+            onClick={retry}
+            className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+          >
+            Retry
+          </button>
         </div>
       )}
 

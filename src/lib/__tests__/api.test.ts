@@ -3,13 +3,13 @@ import { getMessages, sendMessage } from '../api';
 
 const mockMessages = [
   {
-    id: '1',
+    _id: '1',
     message: 'Hello',
     author: 'Alice',
     createdAt: '2024-01-01T10:00:00Z',
   },
   {
-    id: '2',
+    _id: '2',
     message: 'Hi there',
     author: 'Bob',
     createdAt: '2024-01-01T10:01:00Z',
@@ -79,7 +79,7 @@ describe('api', () => {
   describe('sendMessage', () => {
     it('sends message and returns created message', async () => {
       const newMessage = {
-        id: '3',
+        _id: '3',
         message: 'Test message',
         author: 'Alice',
         createdAt: '2024-01-01T10:02:00Z',

@@ -4,7 +4,7 @@ import { useChat } from '../useChat';
 
 const mockMessages = [
   {
-    id: '1',
+    _id: '1',
     message: 'Hello',
     author: 'Alice',
     createdAt: '2024-01-01T10:00:00Z',
@@ -40,7 +40,7 @@ describe('useChat', () => {
 
   it('sends message and updates list', async () => {
     const newMessage = {
-      id: '2',
+      _id: '2',
       message: 'Test',
       author: 'User',
       createdAt: '2024-01-01T10:01:00Z',
