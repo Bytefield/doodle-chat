@@ -10,21 +10,15 @@ interface MessageListProps {
 }
 
 export function MessageList({ messages, currentUser }: MessageListProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const shouldScrollRef = useRef(true);
-
-  const handleScroll = () => {
-    if (!containerRef.current) return;
-    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-    const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
-    shouldScrollRef.current = isNearBottom;
-  };
+  const prevMessagesLengthRef = useRef(messages.length);
 
   useEffect(() => {
-    if (shouldScrollRef.current) {
+    // Only auto-scroll when new messages are added
+    if (messages.length > prevMessagesLengthRef.current) {
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
+    prevMessagesLengthRef.current = messages.length;
   }, [messages]);
 
   if (messages.length === 0) {
@@ -37,12 +31,10 @@ export function MessageList({ messages, currentUser }: MessageListProps) {
 
   return (
     <div
-      ref={containerRef}
-      onScroll={handleScroll}
       role="log"
       aria-live="polite"
       aria-label="Chat messages"
-      className="h-full overflow-y-auto pt-4 pb-[var(--bubble-padding)] overlay-scrollbar"
+      className="pt-4 pb-[var(--bubble-padding)]"
     >
       <ul className="flex flex-col gap-[var(--bubble-gap)]">
         {messages.map((message, index) => {

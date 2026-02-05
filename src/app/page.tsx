@@ -2,13 +2,16 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { useChat } from '@/hooks/useChat';
+import { useScrollbarWidth } from '@/hooks/useScrollbarWidth';
 import { MessageList } from '@/components/MessageList';
 import { ChatInput } from '@/components/ChatInput';
 
 export default function Home() {
   const { messages, isLoading, isSending, error, sendMessage, retry, currentUser } = useChat();
   const retryButtonRef = useRef<HTMLButtonElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
   const [announcement, setAnnouncement] = useState('');
+  const scrollbarWidth = useScrollbarWidth(mainRef);
 
   useEffect(() => {
     if (error && retryButtonRef.current) {
@@ -51,10 +54,11 @@ export default function Home() {
       )}
 
       <main
-        className="flex-1 min-h-0 overflow-hidden"
+        ref={mainRef}
+        className="flex-1 min-h-0 overflow-y-auto"
         style={{ backgroundImage: 'url(/bg.png)', backgroundRepeat: 'repeat' }}
       >
-        <div className="h-full max-w-[var(--container-max-width)] mx-auto px-[var(--container-padding)]">
+        <div className="min-h-full max-w-[var(--container-max-width)] mx-auto px-[var(--container-padding)]">
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
               <p className="text-gray-500 bg-white/80 px-4 py-2 rounded">Loading messages...</p>
@@ -65,7 +69,10 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="h-[var(--footer-height)] shrink-0 bg-[var(--color-primary)] pb-[env(safe-area-inset-bottom)]">
+      <footer
+        className="h-[var(--footer-height)] shrink-0 bg-[var(--color-primary)] pb-[env(safe-area-inset-bottom)]"
+        style={{ paddingRight: scrollbarWidth > 0 ? scrollbarWidth : undefined }}
+      >
         <div className="max-w-[var(--container-max-width)] mx-auto md:px-[var(--container-padding)]">
           <ChatInput onSend={handleSendMessage} isLoading={isSending} />
         </div>

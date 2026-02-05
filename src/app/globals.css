@@ -45,26 +45,25 @@ body {
   color: var(--foreground);
 }
 
-/* Overlay scrollbar */
-.overlay-scrollbar {
-  overflow-y: auto;
+/* Subtle scrollbar styling */
+main {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
 }
 
-.overlay-scrollbar::-webkit-scrollbar {
-  width: 6px;
+main::-webkit-scrollbar {
+  width: 8px;
 }
 
-.overlay-scrollbar::-webkit-scrollbar-track {
+main::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.overlay-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
+main::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
 
-.overlay-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.5);
+main::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
 }
