@@ -22,9 +22,8 @@ export function useChat() {
         lastMessageTime.current = data[data.length - 1].createdAt;
       }
       setError(null);
-    } catch (err) {
+    } catch {
       setError('Failed to load messages');
-      console.log('fetch error:', err);
     } finally {
       setIsLoading(false);
     }
@@ -60,9 +59,8 @@ export function useChat() {
       setMessages((prev) => [...prev, newMessage]);
       lastMessageTime.current = newMessage.createdAt;
       setError(null);
-    } catch (err) {
+    } catch {
       setError('Failed to send message');
-      console.log('send error:', err);
     } finally {
       setIsSending(false);
     }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -9,6 +9,11 @@ interface ChatInputProps {
 
 export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   const [input, setInput] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const handleSend = () => {
     const trimmed = input.trim();
@@ -27,6 +32,7 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   return (
     <div className="flex gap-2 p-4">
       <input
+        ref={inputRef}
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}

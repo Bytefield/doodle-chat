@@ -10,10 +10,21 @@ interface MessageListProps {
 }
 
 export function MessageList({ messages, currentUser }: MessageListProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const shouldScrollRef = useRef(true);
+
+  const handleScroll = () => {
+    if (!containerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+    const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+    shouldScrollRef.current = isNearBottom;
+  };
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (shouldScrollRef.current) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   if (messages.length === 0) {
@@ -25,7 +36,11 @@ export function MessageList({ messages, currentUser }: MessageListProps) {
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4 space-y-2">
+    <div
+      ref={containerRef}
+      onScroll={handleScroll}
+      className="h-full overflow-y-auto p-4 space-y-2"
+    >
       {messages.map((message, index) => {
         const isOwn = message.author === currentUser;
         const prevMessage = messages[index - 1];
