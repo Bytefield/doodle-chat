@@ -58,7 +58,10 @@ export default function Home() {
         className="flex-1 min-h-0 overflow-y-auto"
         style={{ backgroundImage: 'url(/bg.png)', backgroundRepeat: 'repeat' }}
       >
-        <div className="min-h-full max-w-[var(--container-max-width)] mx-auto px-[var(--container-padding)]">
+        <div
+          className="min-h-full max-w-[var(--container-max-width)] mx-auto px-[var(--container-padding)]"
+          style={{ paddingRight: scrollbarWidth > 0 ? `calc(var(--container-padding) - ${scrollbarWidth}px)` : undefined }}
+        >
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
               <p className="text-gray-500 bg-white/80 px-4 py-2 rounded">Loading messages...</p>
@@ -69,10 +72,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer
-        className="h-[var(--footer-height)] shrink-0 bg-[var(--color-primary)] pb-[env(safe-area-inset-bottom)]"
-        style={{ paddingRight: scrollbarWidth > 0 ? scrollbarWidth : undefined }}
-      >
+      <footer className="h-[var(--footer-height)] shrink-0 bg-[var(--color-primary)] pb-[env(safe-area-inset-bottom)]">
         <div className="max-w-[var(--container-max-width)] mx-auto md:px-[var(--container-padding)]">
           <ChatInput onSend={handleSendMessage} isLoading={isSending} />
         </div>

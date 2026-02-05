@@ -76,12 +76,15 @@ This one was tricky. The design has a centered container (max 640px) with 24px p
 3. Hiding the scrollbar - Works but hurts usability on desktop
 4. Negative margin trick (`margin-right: -Xpx`) - Scrollbar wasn't visible in all cases
 
-**The solution**: JavaScript detection. A `useScrollbarWidth` hook measures if the main element has overflow and calculates the exact scrollbar width. The footer receives dynamic `padding-right` to match. Content stays aligned regardless of scrollbar state.
+**The solution**: JavaScript detection. A `useScrollbarWidth` hook measures if the main element has overflow and calculates the exact scrollbar width. When a scrollbar is present, the message container's `padding-right` is reduced by that amount, so the content shifts right to stay aligned with the footer.
 
 ```typescript
 // Simplified version
 const hasScrollbar = element.scrollHeight > element.clientHeight;
 const width = element.offsetWidth - element.clientWidth;
+
+// Applied to message container
+paddingRight: `calc(var(--container-padding) - ${scrollbarWidth}px)`
 ```
 
 It's more code than a pure CSS solution, but it works reliably across browsers and viewport sizes.
