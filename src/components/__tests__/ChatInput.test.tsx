@@ -7,7 +7,7 @@ describe('ChatInput', () => {
     const onSend = vi.fn();
     render(<ChatInput onSend={onSend} />);
 
-    const input = screen.getByPlaceholderText('Type a message...');
+    const input = screen.getByPlaceholderText('Message');
     fireEvent.change(input, { target: { value: '  hello world  ' } });
     fireEvent.click(screen.getByText('Send'));
 
@@ -27,7 +27,7 @@ describe('ChatInput', () => {
     const onSend = vi.fn();
     render(<ChatInput onSend={onSend} />);
 
-    const input = screen.getByPlaceholderText('Type a message...');
+    const input = screen.getByPlaceholderText('Message');
     fireEvent.change(input, { target: { value: '   ' } });
     fireEvent.click(screen.getByText('Send'));
 
@@ -38,7 +38,7 @@ describe('ChatInput', () => {
     const onSend = vi.fn();
     render(<ChatInput onSend={onSend} />);
 
-    const input = screen.getByPlaceholderText('Type a message...');
+    const input = screen.getByPlaceholderText('Message');
     fireEvent.change(input, { target: { value: 'test message' } });
     fireEvent.click(screen.getByText('Send'));
 
@@ -49,7 +49,7 @@ describe('ChatInput', () => {
     const onSend = vi.fn();
     render(<ChatInput onSend={onSend} />);
 
-    const input = screen.getByPlaceholderText('Type a message...');
+    const input = screen.getByPlaceholderText('Message');
     fireEvent.change(input, { target: { value: 'hello' } });
     fireEvent.keyDown(input, { key: 'Enter' });
 
@@ -60,7 +60,7 @@ describe('ChatInput', () => {
     const onSend = vi.fn();
     render(<ChatInput onSend={onSend} isLoading />);
 
-    const input = screen.getByPlaceholderText('Type a message...');
+    const input = screen.getByPlaceholderText('Message');
     const button = screen.getByText('Send');
 
     expect(input).toBeDisabled();

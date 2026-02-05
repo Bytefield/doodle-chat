@@ -2,6 +2,17 @@
 
 import { Message } from '@/types/message';
 
+function decodeHtmlEntities(text: string): string {
+  const entities: Record<string, string> = {
+    '&#39;': "'",
+    '&quot;': '"',
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+  };
+  return text.replace(/&#39;|&quot;|&amp;|&lt;|&gt;/g, (match) => entities[match]);
+}
+
 interface MessageBubbleProps {
   message: Message;
   isOwn: boolean;
@@ -9,28 +20,39 @@ interface MessageBubbleProps {
 }
 
 export function MessageBubble({ message, isOwn, showAuthor = true }: MessageBubbleProps) {
-  const time = new Date(message.createdAt).toLocaleTimeString([], {
+  const date = new Date(message.createdAt);
+  const formattedDate = date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+  const formattedTime = date.toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   });
 
   return (
     <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}>
       <div
-        className={`max-w-[70%] rounded-lg px-4 py-2 ${
+        className={`max-w-[var(--bubble-max-width-s)] md:max-w-[var(--bubble-max-width-m)] p-[var(--bubble-padding)] rounded-lg border-[1.5px] border-[var(--color-bubble-border)] ${
           isOwn
-            ? 'bg-blue-500 text-white'
-            : 'bg-gray-100 text-gray-900'
+            ? 'bg-[var(--color-bubble-own)]'
+            : 'bg-[var(--color-bubble-other)]'
         }`}
       >
         {showAuthor && !isOwn && (
-          <p className="text-xs font-medium text-gray-500 mb-1">
-            {message.author}
+          <p className="text-[0.9rem] font-medium text-[var(--color-text-timestamp)] mb-1">
+            {decodeHtmlEntities(message.author)}
           </p>
         )}
-        <p className="break-words">{message.message}</p>
-        <p className={`text-xs mt-1 ${isOwn ? 'text-blue-100' : 'text-gray-400'}`}>
-          {time}
+        <p className="break-words text-base text-[var(--color-text-message)]">{decodeHtmlEntities(message.message)}</p>
+        <p
+          className={`text-[0.9rem] mt-1 text-[var(--color-text-timestamp)] ${
+            isOwn ? 'text-right pr-[0.5rem]' : 'text-left'
+          }`}
+        >
+          {formattedDate} {formattedTime}
         </p>
       </div>
     </div>

@@ -30,23 +30,24 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   };
 
   return (
-    <div className="flex gap-2 p-4">
+    <div className="flex gap-2 p-2">
       <input
+        id="message-input"
         ref={inputRef}
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Type a message..."
+        placeholder="Message"
         aria-label="Message input"
         disabled={isLoading}
-        className="flex-1 min-h-11 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+        className="flex-1 h-10 px-2 py-4 text-base bg-white border border-[#2e77a4] rounded focus:outline-none focus:ring-2 focus:ring-[#2e77a4] disabled:bg-gray-100"
       />
       <button
         onClick={handleSend}
         disabled={isLoading || !input.trim()}
         aria-label="Send message"
-        className="min-h-11 px-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+        className="h-10 px-6 bg-[#e85d3a] text-white text-base rounded hover:opacity-90 disabled:bg-[#ff876d] disabled:cursor-not-allowed transition-opacity"
       >
         Send
       </button>

@@ -3,6 +3,29 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Doodle Chat Design Tokens */
+  --color-primary: #3798d4;
+  --color-primary-dark: #2e77a4;
+  --color-accent: #ff876d;
+  --color-bubble-own: #fcf6c5;
+  --color-bubble-other: #ffffff;
+  --color-bubble-border: #d0d6dc;
+  --color-text-message: #434b54;
+  --color-text-timestamp: #b3bcc3;
+
+  /* Spacing */
+  --container-max-width: 40rem;    /* 640px */
+  --container-padding: 1.5rem;     /* 24px */
+  --bubble-max-width-m: 26.25rem;  /* 420px */
+  --bubble-max-width-s: 15rem;     /* 240px */
+  --bubble-padding: 1rem;          /* 16px */
+  --bubble-gap: 1rem;              /* 16px */
+  --input-gap: 0.5rem;             /* 8px */
+
+  /* Layout heights */
+  --header-height: 3.5rem;         /* 56px */
+  --footer-height: 3.5rem;         /* 56px */
 }
 
 @theme inline {
@@ -12,7 +35,36 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  font-size: 16px;
+  text-size-adjust: 100%;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Overlay scrollbar */
+.overlay-scrollbar {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+.overlay-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
 }

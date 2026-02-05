@@ -42,9 +42,9 @@ export function MessageList({ messages, currentUser }: MessageListProps) {
       role="log"
       aria-live="polite"
       aria-label="Chat messages"
-      className="h-full overflow-y-auto p-4"
+      className="h-full overflow-y-auto pt-4 pb-[var(--bubble-padding)] overlay-scrollbar"
     >
-      <ul className="space-y-2">
+      <ul className="flex flex-col gap-[var(--bubble-gap)]">
         {messages.map((message, index) => {
           const isOwn = message.author === currentUser;
           const prevMessage = messages[index - 1];
