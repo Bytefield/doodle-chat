@@ -39,22 +39,28 @@ export function MessageList({ messages, currentUser }: MessageListProps) {
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="h-full overflow-y-auto p-4 space-y-2"
+      role="log"
+      aria-live="polite"
+      aria-label="Chat messages"
+      className="h-full overflow-y-auto p-4"
     >
-      {messages.map((message, index) => {
-        const isOwn = message.author === currentUser;
-        const prevMessage = messages[index - 1];
-        const showAuthor = !prevMessage || prevMessage.author !== message.author;
+      <ul className="space-y-2">
+        {messages.map((message, index) => {
+          const isOwn = message.author === currentUser;
+          const prevMessage = messages[index - 1];
+          const showAuthor = !prevMessage || prevMessage.author !== message.author;
 
-        return (
-          <MessageBubble
-            key={message.id}
-            message={message}
-            isOwn={isOwn}
-            showAuthor={showAuthor}
-          />
-        );
-      })}
+          return (
+            <li key={message.id}>
+              <MessageBubble
+                message={message}
+                isOwn={isOwn}
+                showAuthor={showAuthor}
+              />
+            </li>
+          );
+        })}
+      </ul>
       <div ref={bottomRef} />
     </div>
   );
