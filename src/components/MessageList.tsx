@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { Message } from '@/types/message';
 import { MessageBubble } from './MessageBubble';
+
+const NEAR_BOTTOM_THRESHOLD = 150;
 
 interface MessageListProps {
   messages: Message[];
@@ -11,15 +13,22 @@ interface MessageListProps {
 
 export function MessageList({ messages, currentUser }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const prevMessagesLengthRef = useRef(messages.length);
 
+  const isNearBottom = useCallback(() => {
+    const container = containerRef.current?.parentElement;
+    if (!container) return true;
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    return scrollHeight - scrollTop - clientHeight <= NEAR_BOTTOM_THRESHOLD;
+  }, []);
+
   useEffect(() => {
-    // Only auto-scroll when new messages are added
-    if (messages.length > prevMessagesLengthRef.current) {
+    if (messages.length > prevMessagesLengthRef.current && isNearBottom()) {
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
     prevMessagesLengthRef.current = messages.length;
-  }, [messages]);
+  }, [messages, isNearBottom]);
 
   if (messages.length === 0) {
     return (
@@ -31,6 +40,7 @@ export function MessageList({ messages, currentUser }: MessageListProps) {
 
   return (
     <div
+      ref={containerRef}
       role="log"
       aria-live="polite"
       aria-label="Chat messages"
