@@ -13,16 +13,20 @@ export function useChat() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const lastMessageTime = useRef<string | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchMessages = useCallback(async () => {
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = new AbortController();
     try {
-      const data = await getMessages();
+      const data = await getMessages(undefined, abortControllerRef.current.signal);
       setMessages(data);
       if (data.length > 0) {
         lastMessageTime.current = data[data.length - 1].createdAt;
       }
       setError(null);
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return;
       setError('Failed to load messages');
     } finally {
       setIsLoading(false);
@@ -49,14 +53,31 @@ export function useChat() {
 
   useEffect(() => {
     fetchMessages();
+    return () => {
+      abortControllerRef.current?.abort();
+    };
   }, [fetchMessages]);
 
   useEffect(() => {
-    const interval = setInterval(pollNewMessages, POLL_INTERVAL);
-    return () => clearInterval(interval);
+    let interval = setInterval(pollNewMessages, POLL_INTERVAL);
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        clearInterval(interval);
+      } else {
+        pollNewMessages();
+        interval = setInterval(pollNewMessages, POLL_INTERVAL);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, [pollNewMessages]);
 
-  const sendMessage = async (text: string) => {
+  const sendMessage = useCallback(async (text: string) => {
     setIsSending(true);
     try {
       const newMessage = await sendMessageApi(text, CURRENT_USER);
@@ -68,7 +89,7 @@ export function useChat() {
     } finally {
       setIsSending(false);
     }
-  };
+  }, []);
 
   const retry = () => {
     setIsLoading(true);

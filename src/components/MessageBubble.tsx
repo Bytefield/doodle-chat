@@ -1,5 +1,3 @@
-'use client';
-
 import { Message } from '@/types/message';
 
 function decodeHtmlEntities(text: string): string {
@@ -9,8 +7,16 @@ function decodeHtmlEntities(text: string): string {
     '&amp;': '&',
     '&lt;': '<',
     '&gt;': '>',
+    '&nbsp;': '\u00A0',
+    '&mdash;': '\u2014',
+    '&ndash;': '\u2013',
+    '&hellip;': '\u2026',
+    '&copy;': '\u00A9',
   };
-  return text.replace(/&#39;|&quot;|&amp;|&lt;|&gt;/g, (match) => entities[match]);
+  return text
+    .replace(/&\w+;/g, (match) => entities[match] ?? match)
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
 }
 
 interface MessageBubbleProps {

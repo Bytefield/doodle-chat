@@ -37,7 +37,7 @@ export interface GetMessagesParams {
   before?: string;
 }
 
-export async function getMessages(params?: GetMessagesParams): Promise<Message[]> {
+export async function getMessages(params?: GetMessagesParams, signal?: AbortSignal): Promise<Message[]> {
   const searchParams = new URLSearchParams();
   if (params?.limit) searchParams.set('limit', String(params.limit));
   if (params?.after) searchParams.set('after', params.after);
@@ -46,12 +46,13 @@ export async function getMessages(params?: GetMessagesParams): Promise<Message[]
   const query = searchParams.toString();
   const endpoint = `/api/v1/messages${query ? `?${query}` : ''}`;
 
-  return fetchApi<Message[]>(endpoint);
+  return fetchApi<Message[]>(endpoint, { signal });
 }
 
-export async function sendMessage(message: string, author: string): Promise<Message> {
+export async function sendMessage(message: string, author: string, signal?: AbortSignal): Promise<Message> {
   return fetchApi<Message>('/api/v1/messages', {
     method: 'POST',
     body: JSON.stringify({ message, author }),
+    signal,
   });
 }
