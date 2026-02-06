@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { useChat } from '@/hooks/useChat';
 import { useScrollbarWidth } from '@/hooks/useScrollbarWidth';
 import { MessageList } from '@/components/MessageList';
@@ -12,6 +12,7 @@ export default function Home() {
   const mainRef = useRef<HTMLElement>(null);
   const [announcement, setAnnouncement] = useState('');
   const scrollbarWidth = useScrollbarWidth(mainRef);
+  const announcementTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (error && retryButtonRef.current) {
@@ -19,11 +20,22 @@ export default function Home() {
     }
   }, [error]);
 
-  const handleSendMessage = async (message: string) => {
+  useEffect(() => {
+    return () => {
+      if (announcementTimerRef.current) {
+        clearTimeout(announcementTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleSendMessage = useCallback(async (message: string) => {
     await sendMessage(message);
     setAnnouncement('Message sent');
-    setTimeout(() => setAnnouncement(''), 1000);
-  };
+    if (announcementTimerRef.current) {
+      clearTimeout(announcementTimerRef.current);
+    }
+    announcementTimerRef.current = setTimeout(() => setAnnouncement(''), 1000);
+  }, [sendMessage]);
 
   return (
     <div className="flex flex-col h-dvh">
