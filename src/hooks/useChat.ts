@@ -52,8 +52,22 @@ export function useChat() {
   }, [fetchMessages]);
 
   useEffect(() => {
-    const interval = setInterval(pollNewMessages, POLL_INTERVAL);
-    return () => clearInterval(interval);
+    let interval = setInterval(pollNewMessages, POLL_INTERVAL);
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        clearInterval(interval);
+      } else {
+        pollNewMessages();
+        interval = setInterval(pollNewMessages, POLL_INTERVAL);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, [pollNewMessages]);
 
   const sendMessage = useCallback(async (text: string) => {
