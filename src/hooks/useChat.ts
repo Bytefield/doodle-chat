@@ -13,16 +13,20 @@ export function useChat() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const lastMessageTime = useRef<string | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchMessages = useCallback(async () => {
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = new AbortController();
     try {
-      const data = await getMessages();
+      const data = await getMessages(undefined, abortControllerRef.current.signal);
       setMessages(data);
       if (data.length > 0) {
         lastMessageTime.current = data[data.length - 1].createdAt;
       }
       setError(null);
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return;
       setError('Failed to load messages');
     } finally {
       setIsLoading(false);
@@ -49,6 +53,9 @@ export function useChat() {
 
   useEffect(() => {
     fetchMessages();
+    return () => {
+      abortControllerRef.current?.abort();
+    };
   }, [fetchMessages]);
 
   useEffect(() => {
