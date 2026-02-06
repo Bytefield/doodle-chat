@@ -56,7 +56,7 @@ export function useChat() {
     return () => clearInterval(interval);
   }, [pollNewMessages]);
 
-  const sendMessage = async (text: string) => {
+  const sendMessage = useCallback(async (text: string) => {
     setIsSending(true);
     try {
       const newMessage = await sendMessageApi(text, CURRENT_USER);
@@ -68,7 +68,7 @@ export function useChat() {
     } finally {
       setIsSending(false);
     }
-  };
+  }, []);
 
   const retry = () => {
     setIsLoading(true);
