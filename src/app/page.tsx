@@ -79,7 +79,7 @@ export default function Home() {
               <p className="text-gray-500 bg-white/80 px-4 py-2 rounded">Loading messages...</p>
             </div>
           ) : (
-            <MessageList messages={messages} currentUser={currentUser} />
+            <MessageList messages={messages} currentUser={currentUser} scrollContainerRef={mainRef} />
           )}
         </div>
       </main>

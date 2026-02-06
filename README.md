@@ -37,7 +37,7 @@ interface Message {
   _id: string;
   message: string;
   author: string;
-  timestamp: string; // ISO date
+  createdAt: string; // ISO date
 }
 ```
 
@@ -171,4 +171,9 @@ Tests cover:
 - `useChat` hook: message fetching, sending, error states, optimistic updates
 - `ChatInput`: rendering, submit behavior, disabled states
 - `api` module: success/error responses, token handling
+
+## Future Improvements
+
+- **Message length validation**: Add a `maxLength` constraint to the input to prevent excessively long messages from being submitted
+- **Fake timers in tests**: Introduce `vi.useFakeTimers()` in `useChat` tests to fully control polling intervals and prevent potential timer leaks between test runs
 
