@@ -41,13 +41,13 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
         placeholder="Message"
         aria-label="Message input"
         disabled={isLoading}
-        className="flex-1 h-10 px-2 py-4 text-base bg-white border border-[#2e77a4] rounded focus:outline-none focus:ring-2 focus:ring-[#2e77a4] disabled:bg-gray-100"
+        className="flex-1 h-10 px-2 py-4 text-base bg-white border border-[var(--color-primary-dark)] rounded focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-dark)] disabled:bg-gray-100"
       />
       <button
         onClick={handleSend}
         disabled={isLoading || !input.trim()}
         aria-label="Send message"
-        className="h-10 px-6 bg-[#e85d3a] text-white text-base rounded hover:opacity-90 disabled:bg-[#ff876d] disabled:cursor-not-allowed transition-opacity"
+        className="h-10 px-6 bg-[var(--color-accent-dark)] text-white text-base rounded hover:opacity-90 disabled:bg-[var(--color-accent)] disabled:cursor-not-allowed transition-opacity"
       >
         Send
       </button>
