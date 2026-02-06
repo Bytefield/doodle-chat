@@ -1,5 +1,3 @@
-'use client';
-
 import { Message } from '@/types/message';
 
 function decodeHtmlEntities(text: string): string {
